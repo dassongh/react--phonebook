@@ -6,14 +6,20 @@ import ContactList from './components/contactList/ContactList';
 
 class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Harry Potter', number: '459-12-56' },
-      { id: 'id-2', name: 'Peter Parker', number: '443-89-12' },
-      { id: 'id-3', name: 'Margo Robbie', number: '645-17-79' },
-      { id: 'id-4', name: 'Isaac Newton', number: '227-91-26' },
-    ],
+    contacts: [],
     filter: '',
   };
+
+  componentDidMount() {
+    const contacts = JSON.parse(localStorage.getItem('contacts'));
+    this.setState({ contacts });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
 
   removeContact = e => {
     const { contacts } = this.state;
